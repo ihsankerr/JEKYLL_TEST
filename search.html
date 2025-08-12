@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Search - {{ site.title }}</title>
+<link rel="stylesheet" href="{{ '/style.css' | relative_url }}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="container">
+      <h1><a href="{{ '/' | relative_url }}">{{ site.title }}</a></h1>
+      <nav class="site-nav">
+        <a href="{{ '/' | relative_url }}">Home</a>
+        <a href="{{ '/reviews/' | relative_url }}">Reviews</a>
+        <a href="{{ '/best-of/' | relative_url }}">Best of</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h2>Search Reviews</h2>
+    <input id="searchBox" type="text" placeholder="Type to search..." style="width:100%;padding:10px;margin-bottom:1rem;">
+
+    <div id="results"></div>
+  </main>
+
+<script>
+// Build a small index from the site.posts data that Jekyll will inject during build
+var POSTS = [
+{% for post in site.posts %}
+  {
+    "title": "{{ post.title | escape }}",
+    "url": "{{ post.url | relative_url }}",
+    "summary": {{ post.excerpt | jsonify }}
+  }{% if forloop.last == false %},{% endif %}
+{% endfor %}
+];
+
+function renderResults(items) {
+  var out = '';
+  if (items.length === 0) {
+    out = '<p>No results</p>';
+  } else {
+    items.forEach(function(p){
+      out += '<div class="review-card"><a href="'+p.url+'"><strong>'+p.title+'</strong></a><p>'+p.summary+'</p></div>';
+    });
+  }
+  document.getElementById('results').innerHTML = out;
+}
+
+document.getElementById('searchBox').addEventListener('input', function(){
+  var q = this.value.toLowerCase();
+  var filtered = POSTS.filter(function(p){
+    return p.title.toLowerCase().indexOf(q) !== -1 || p.summary.toLowerCase().indexOf(q) !== -1;
+  });
+  renderResults(filtered);
+});
+
+// render all initially
+renderResults(POSTS);
+</script>
+</body>
+</html>

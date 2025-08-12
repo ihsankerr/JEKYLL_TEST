@@ -1,0 +1,4 @@
+title: My Jekyll Review Site
+baseurl: "" # leave blank when publishing to USER.github.io
+url: ""     # the full URL, leave blank for local testing / GitHub Pages
+paginate: 10

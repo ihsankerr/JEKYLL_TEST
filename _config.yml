@@ -1,0 +1,8 @@
+title: Jekyll Test Site
+description: >-
+  Example Jekyll site for reviews.
+baseurl: "/JEKYLL_TEST" # the subpath of your site
+url: "" # will be filled in by GitHub Pages
+theme: minima
+plugins:
+  - jekyll-feed
